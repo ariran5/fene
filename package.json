@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "server": "nodemon server/server.mjs",
+    "static": "static -p 1234"
+  },
+  "dependencies": {
+    "node-static": "^0.7.11",
+    "ws": "^7.4.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
