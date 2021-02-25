@@ -4,6 +4,7 @@
     "static": "static -p 1234"
   },
   "dependencies": {
+    "graphql": "^15.5.0",
     "node-static": "^0.7.11",
     "ws": "^7.4.3"
   },
