@@ -1,5 +1,3 @@
-import { createInstruments } from '../../client/main.js'
-
 +async function(){
   
   await new Promise(res => {
@@ -7,33 +5,59 @@ import { createInstruments } from '../../client/main.js'
   })
   
   const socket = new WebSocket('ws://localhost:9876')
-  console.log(socket);
-  const {
-    wsFetch
-  } = createInstruments(socket)
 
-  wsFetch('getBody', data => {
-    console.log(data)
+  socket.addEventListener('close', () => {
+    location.reload()
   })
-  // socket.onopen = function() {
-  //   console.log("Соединение установлено.")
-  // }
-  
-  // socket.onclose = function(event) {
-  //   if (event.wasClean) {
-  //     console.log('Соединение закрыто чисто')
-  //   } else {
-  //     console.log('Обрыв соединения') // например, "убит" процесс сервера
-  //   }
-  //   console.log('Код: ' + event.code + ' причина: ' + event.reason)
-  // }
-  
-  // socket.onmessage = function(event) {
-  //   console.log("Получены данные " + event.data)
-  // }
-  
-  // socket.onerror = function(error) {
-  //   console.log("Ошибка " + error.message)
-  // }
 
+  socket.addEventListener('message', (event) => console.log(event.data))
+
+  document.querySelector('#qwe').onclick = () => {
+    socket.send(JSON.stringify({
+      // query: `
+      // subscription { 
+      //   hello(id: 1) {
+      //     helloText(ids: 22)
+      //     chandeId
+      //   }
+      //   goodby
+      //   user {
+      //     id
+      //     access
+      //   }
+      // }`
+      query: `
+      subscription @time(min: 1) { 
+        user {
+          id
+        }
+      }`
+    }))
+  }
+
+  zxc.onclick = () => {
+    socket.send(JSON.stringify({
+      query: `
+      { 
+        hello(id: 1) {
+          helloText(ids: 22)
+          chandeId
+        }
+        goodby
+        user {
+          id
+          access
+        }
+      }`
+    }))
+  }
+
+  document.querySelector('#asd').onclick = () => {
+    socket.send(JSON.stringify({
+      query: `
+      mutation ChangeMessage{
+        setMessage(message: "antony") {hello {chandeId}, goodby}
+      }`
+    }))
+  }
 }()

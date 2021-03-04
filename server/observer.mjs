@@ -1,35 +1,19 @@
-// const cacheWSRequests = new WeakMap()
-const signs = new Map()
+export function mongo(){
+  const collections = new Map()
 
-export function listen(ws, request){
-  const {
-    sign,
-    type,
-    body
-  } = request
-  console.log(sign);
-
-  const cache = signs.get(sign) ?? []
-
-  if (type === 'delete') {
-    signs.delete(sign)
-    return
+  return {
+    subscribe(cb, list){
+      list.forEach(item => {
+        const count = collections.get(item) ?? 0
+        collections.set(item, count + 1)
+      })
+      return (...args) => cb(...args)
+    },
+    unsubscribe(cb, list){
+      list.forEach(item => {
+        const count = collections.get(item) ?? 0
+        collections.set(item, Math.min(count - 1, 0))
+      })
+    }
   }
-
-  cache.push({ws, body})
-  
-  signs.set(sign, cache)
-}
-
-export function dispatch(sign, data){
-  const arr = signs.get(sign)
-
-  arr.forEach(item => {
-    const {
-      ws,
-      body
-    } = item
-
-    ws.send(JSON.stringify(data))
-  })
 }
